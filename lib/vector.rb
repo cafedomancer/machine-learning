@@ -58,7 +58,6 @@ class Vector
   end
 
   def variance
-    m = mean
-    ((self - m) ** 2).sum / (length - 1)
+    ((self - mean) ** 2).sum / (length - 1)
   end
 end
