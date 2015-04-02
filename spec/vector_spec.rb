@@ -2,7 +2,7 @@ require 'vector'
 
 RSpec.describe Vector do
   describe '#**' do
-    it 'return a new vector of the results of power' do
+    it 'returns a new vector of the results of power' do
       vector = Vector.new([1.0, 2.0, 3.0])
 
       expect(vector ** 2.0).to eq(Vector.new([1.0, 4.0, 9.0]))
@@ -10,7 +10,7 @@ RSpec.describe Vector do
   end
 
   describe '#-' do
-    it 'return a new vector of the results of subtraction' do
+    it 'returns a new vector of the results of subtraction' do
       vector = Vector.new([1.0, 2.0, 3.0])
 
       expect(vector - 2.0).to eq(Vector.new([-1.0, 0.0, 1.0]))
