@@ -54,7 +54,7 @@ class Vector
   end
 
   def sum
-    @components.reduce(&:+)
+    @components.reduce(0.0, &:+)
   end
 
   def variance
