@@ -21,7 +21,7 @@ module Statistics
     end
 
     def sum
-      reduce(0, &:+)
+      reduce(0.0, &:+)
     end
 
     def variance
