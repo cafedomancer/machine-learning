@@ -1,7 +1,7 @@
 module Multidimensional
   refine Array do
     def [](*arguments)
-      if self == flatten
+      if flatten == self
         super(*arguments)
       else
         argument = arguments.shift
