@@ -1,8 +1,8 @@
-require 'multidimensional'
+require 'bidimensional'
 
-using Multidimensional
+using Bidimensional
 
-RSpec.describe Multidimensional do
+RSpec.describe Bidimensional do
   describe '#[]' do
     it 'does not break super method' do
       expect([1, 2, 3][0]).to eq(1)

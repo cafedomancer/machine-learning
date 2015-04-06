@@ -1,4 +1,4 @@
-module Multidimensional
+module Bidimensional
   refine Array do
     def [](*arguments)
       if flatten == self
