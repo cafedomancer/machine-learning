@@ -1,11 +1,16 @@
 module Multidimensional
   refine Array do
-    def [](*indices)
-      index = indices.shift
-      if indices.empty?
-        super(index)
+    def [](*arguments)
+      if self == flatten
+        super(*arguments)
       else
-        super(index)[*indices]
+        argument = arguments.shift
+
+        if arguments.empty?
+          super(argument)
+        else
+          super(argument)[*arguments]
+        end
       end
     end
   end
