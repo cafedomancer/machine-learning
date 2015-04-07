@@ -11,9 +11,9 @@ module Bidimensional
         if !row.nil? && !column.nil?
           at(row).at(column)
         elsif !row.nil?
-          super(row)
+          slice(row)
         elsif !column.nil?
-          map { |e| e[column] }
+          map { |e| e.slice(column) }
         else
           clone
         end
