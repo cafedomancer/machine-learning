@@ -1,4 +1,4 @@
-module Statistics
+module Statistical
   refine Array do
     def mean
       sum / length
