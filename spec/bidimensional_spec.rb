@@ -23,11 +23,23 @@ RSpec.describe Bidimensional do
     end
 
     it 'returns the first column of its elements' do
-      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][nil, 0]).to eq([1, 4, 9])
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][nil, 0]).to eq([1, 4, 7])
     end
 
     it 'returns the first and second columns of its elements' do
       expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][nil, 0..1]).to eq([[1, 2], [4, 5], [7, 8]])
+    end
+
+    it 'returns itself' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][nil, nil]).to eq([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    end
+  end
+
+  describe '#consistent?' do
+    it 'returns the result of checking its consistency' do
+      expect([1, 2, 3].consistent?).to eq(false)
+      expect([1, [2], 3].consistent?).to eq(false)
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]].consistent?).to eq(true)
     end
   end
 end
