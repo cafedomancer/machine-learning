@@ -21,6 +21,18 @@ RSpec.describe Vector do
     end
   end
 
+  describe '#norm' do
+    it 'returns the norm of itself' do
+      expect([1.0, 2.0, 3.0].norm).to eq(3.7416573867739413)
+    end
+  end
+
+  describe '#normalize' do
+    it 'returns the vector normalized' do
+      expect([1.0, 2.0, 3.0].normalize).to eq([0.2672612419124244, 0.5345224838248488, 0.8017837257372732])
+    end
+  end
+
   describe '#subtract' do
     it 'returns the vector from which another vector subtracted' do
       expect([1.0, 2.0, 3.0].subtract([4.0, 5.0, 6.0])).to eq([-3.0, -3.0, -3.0])
