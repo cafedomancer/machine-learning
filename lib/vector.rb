@@ -12,12 +12,12 @@ module Vector
       subtract(other).norm
     end
 
-    def divide(operand)
-      map { |e| e / operand }
+    def divide(scalar)
+      map { |e| e / scalar}
     end
 
-    def multiply(operand)
-      map { |e| e * operand }
+    def multiply(scalar)
+      map { |e| e * scalar }
     end
 
     def norm
