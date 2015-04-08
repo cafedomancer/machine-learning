@@ -1,7 +1,7 @@
 module Matrix
   refine Array do
     def [](*arguments)
-      if consistent?
+      if matrix?
         if arguments.length != 2
           raise ArgumentError, "wrong number of arguments (#{arguments.length} for 2)"
         end
@@ -50,7 +50,7 @@ module Matrix
       end
     end
 
-    def consistent?
+    def matrix?
       # it does not consider the case of 3 or higher dimensional
       if all? { |e| e.instance_of?(Array) }
         map(&:length).uniq.one?

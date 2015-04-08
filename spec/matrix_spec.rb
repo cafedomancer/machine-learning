@@ -53,11 +53,11 @@ RSpec.describe Matrix do
     end
   end
 
-  describe '#consistent?' do
-    it 'returns the result of checking its consistency' do
-      expect([1, 2, 3].consistent?).to eq(false)
-      expect([1, [2], 3].consistent?).to eq(false)
-      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]].consistent?).to eq(true)
+  describe '#matrix?' do
+    it 'returns the result of checking if itself is a matrix' do
+      expect([1, 2, 3].matrix?).to eq(false)
+      expect([1, [2], 3].matrix?).to eq(false)
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]].matrix?).to eq(true)
     end
   end
 end
