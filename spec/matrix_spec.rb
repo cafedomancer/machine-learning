@@ -1,8 +1,8 @@
-require 'bidimensional'
+require 'matrix'
 
-using Bidimensional
+using Matrix
 
-RSpec.describe Bidimensional do
+RSpec.describe Matrix do
   describe '#[]' do
     it 'does not break super method' do
       expect([1, 2, 3][0]).to eq(1)

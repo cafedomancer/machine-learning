@@ -1,4 +1,4 @@
-module Bidimensional
+module Matrix
   refine Array do
     def [](*arguments)
       if consistent?

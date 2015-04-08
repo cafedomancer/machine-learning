@@ -1,8 +1,8 @@
-require 'statistical'
+require 'stats'
 
-using Statistical
+using Stats
 
-RSpec.describe Statistical do
+RSpec.describe Stats do
   describe '#mean' do
     it 'returns the mean of its elements' do
       expect([1.0, 2.0, 3.0].mean).to eq(2.0)
