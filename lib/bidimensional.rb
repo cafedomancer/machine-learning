@@ -9,7 +9,7 @@ module Bidimensional
         row, column = arguments
 
         if !row.nil? && !column.nil?
-          at(row).at(column)
+          slice(row).slice(column)
         elsif !row.nil?
           slice(row)
         elsif !column.nil?
