@@ -9,6 +9,12 @@ RSpec.describe Vector do
     end
   end
 
+  describe '#distance' do
+    it 'returns the distance between itself and another' do
+      expect([1.0, 2.0, 3.0].distance([4.0, 5.0, 6.0])).to eq(5.196152422706632)
+    end
+  end
+
   describe '#divide' do
     it 'returns the vector divided by a scalar' do
       expect([1.0, 2.0, 3.0].divide(2.0)).to eq([0.5, 1.0, 1.5])

@@ -8,6 +8,10 @@ module Vector
       zip(operand).map { |e1, e2| e1 + e2 }
     end
 
+    def distance(other)
+      self.subtract(other).norm
+    end
+
     def divide(operand)
       map { |e| e / operand }
     end
