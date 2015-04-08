@@ -9,7 +9,7 @@ module Vector
     end
 
     def distance(other)
-      self.subtract(other).norm
+      subtract(other).norm
     end
 
     def divide(operand)
