@@ -23,7 +23,7 @@ module Matrix
         when Range
           case column
           when Integer
-            slice(row).map { |e| e.at(column) }
+            slice(row).map { |e| e.slice(column) }
           when Range
             slice(row).map { |e| e.slice(column) }
           when NilClass
