@@ -34,7 +34,7 @@ module Matrix
         when NilClass
           case column
           when Integer
-            map { |e| e.slice(column) }
+            map { |e| e.at(column) }
           when Range
             map { |e| e.slice(column) }
           when NilClass
