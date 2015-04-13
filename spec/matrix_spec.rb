@@ -18,6 +18,10 @@ RSpec.describe Matrix do
       expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][0, 0..1]).to eq([1, 2])
     end
 
+    it 'returns the elements in the first row and first and third columns of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][0, [0, 2]]).to eq([1, 3])
+    end
+
     it 'returns the first row of its elements' do
       expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][0, nil]).to eq([1, 2, 3])
     end
@@ -30,8 +34,28 @@ RSpec.describe Matrix do
       expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][0..1, 0..1]).to eq([[1, 2], [4, 5]])
     end
 
+    it 'returns the elements in the first and second rows and first and third columns of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][0..1, [0, 2]]).to eq([[1, 3], [4, 6]])
+    end
+
     it 'returns the first and second rows of its elements' do
       expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][0..1, nil]).to eq([[1, 2, 3], [4, 5, 6]])
+    end
+
+    it 'returns the elements in the first and third rows and first column of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][[0, 2], 0]).to eq([1, 7])
+    end
+
+    it 'returns the elements in the first and third rows and first and second columns of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][[0, 2], 0..1]).to eq([[1, 2], [7, 8]])
+    end
+
+    it 'returns the elements in the first and third rows and first and third columns of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][[0, 2], [0, 2]]).to eq([[1, 3], [7, 9]])
+    end
+
+    it 'returns the first and third rows of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][[0, 2], nil]).to eq([[1, 2, 3], [7, 8, 9]])
     end
 
     it 'returns the first column of its elements' do
@@ -40,6 +64,10 @@ RSpec.describe Matrix do
 
     it 'returns the first and second columns of its elements' do
       expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][nil, 0..1]).to eq([[1, 2], [4, 5], [7, 8]])
+    end
+
+    it 'returns the first and third columns of its elements' do
+      expect([[1, 2, 3], [4, 5, 6], [7, 8, 9]][nil, [0, 2]]).to eq([[1, 3], [4, 6], [7, 9]])
     end
 
     it 'returns itself' do
