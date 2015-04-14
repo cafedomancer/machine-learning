@@ -11,7 +11,7 @@ class KFold
     return to_enum(:each) unless block_given?
 
     indices = (0...@n).to_a
-    
+
     if @shuffle
       folds = indices.shuffle.each_slice(@n.fdiv(@k).ceil)
     else
