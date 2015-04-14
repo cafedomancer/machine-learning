@@ -10,18 +10,24 @@ class KFold
   def each(&block)
     return to_enum(:each) unless block_given?
 
-    indices = (0...@n).to_a
-
-    if @shuffle
-      folds = indices.shuffle.each_slice(@n.fdiv(@k).ceil)
-    else
-      folds = indices.each_slice(@n.fdiv(@k).ceil)
-    end
-
     folds.each do |fold|
       train = indices - fold
       test = fold
       yield train, test
+    end
+  end
+
+  private
+
+  def indices
+    (0...@n).to_a
+  end
+
+  def folds
+    if @shuffle
+      indices.shuffle.each_slice(@n.fdiv(@k).ceil)
+    else
+      indices.each_slice(@n.fdiv(@k).ceil)
     end
   end
 end
