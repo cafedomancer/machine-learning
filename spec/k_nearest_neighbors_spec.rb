@@ -26,4 +26,16 @@ RSpec.describe KNearestNeighbors do
       expect(knn.predict([[1.1]])).to eq([0])
     end
   end
+
+  describe '#score' do
+    it 'return the accuracy on the given features and labels' do
+      knn = KNearestNeighbors.new(n_neighbors = 3)
+
+      features =  [[0], [1], [2], [3]]
+      labels = [0, 0, 1, 1]
+
+      knn.fit(features, labels)
+      expect(knn.score([[1.1], [1.5]], [0, 1])).to eq(0.5)
+    end
+  end
 end
