@@ -24,7 +24,7 @@ class KNearestNeighbors
 
   def score(features, labels)
     predicted = predict(features)
-    correct = labels.zip(predicted).map { |l, p| l == p }.count(true)
-    correct.fdiv(labels.length)
+    corrects = labels.zip(predicted).map { |l, p| l == p }.count(true)
+    corrects.fdiv(labels.length)
   end
 end
