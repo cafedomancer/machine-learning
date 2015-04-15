@@ -9,17 +9,21 @@ class KNearestNeighbors
   end
 
   def predict(features)
-    features.map do |f1|
-      distances = @features.map do |f2|
+    features.map { |f1|
+      distances = @features.map { |f2|
         subtracted = f1.zip(f2).map { |e1, e2| e1 - e2 }
-        norm = Math.sqrt(subtracted.map { |e| e ** 2 }.reduce(&:+))
-      end
+        squared = subtracted.map { |e| e ** 2 }
+        Math.sqrt(squared.reduce(&:+))
+      }
 
-      labels = @labels.zip(distances).sort_by { |e| e.at(1) }.map { |e| e.at(0) }
+      paired = @labels.zip(distances)
+      paired = paired.sort_by { |e| e.at(1) }
+
+      labels = paired.map { |e| e.at(0) }
 
       candidates = labels.take(@n_neighbors)
       candidates.max_by { |e| candidates.count(e) }
-    end
+    }
   end
 
   def score(features, labels)
