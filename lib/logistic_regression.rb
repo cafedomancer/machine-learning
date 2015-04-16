@@ -1,22 +1,21 @@
 class LogisticRegression
   def fit(features, labels)
-    ws = Array.new(2, 0)
-    b = 0
-    eta = 0.1
+    @coefficients = Array.new(2, 0)
+    @intercept = 0
+    learning_rate = 0.13
 
+    # the number of loop steps need to be determined
+    # the learning rate need to be scheduled appropriately
     features.zip(labels).each do |feature, label|
-      predicted = sigmoid(ws.zip(feature).map { |w, e| w * e }.reduce(&:+) + b)
+      predicted = predict([feature]).first
       error = label - predicted
 
-      gradient_ws = -1 * feature.map { |e| e * error }.reduce(&:+)
-      gradient_b = -1 * error
+      gradient_coefficients = -1 * feature.map { |e| e * error }.reduce(&:+)
+      gradient_intercept = -1 * error
 
-      ws = ws.map { |w| w  - eta * gradient_ws }
-      b = b - eta * gradient_b
+      @coefficients = @coefficients.map { |e| e - learning_rate * gradient_coefficients }
+      @intercept = @intercept - learning_rate * gradient_intercept
     end
-
-    @coefficients = ws
-    @intercept = b
   end
 
   def predict(features)
