@@ -25,7 +25,11 @@ class LogisticRegression
   end
 
   def score(features, labels)
-    raise NotImplementedError
+    predicted = predict(features)
+    paired = labels.zip(predicted)
+    compared = paired.map { |e1, e2| e1 == e2.round }
+    corrects = compared.count(true)
+    corrects.fdiv(labels.length)
   end
 
   private
