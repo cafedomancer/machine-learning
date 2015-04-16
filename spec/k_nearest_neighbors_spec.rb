@@ -31,7 +31,7 @@ RSpec.describe KNearestNeighbors do
     it 'return the accuracy on the given features and labels' do
       knn = KNearestNeighbors.new(n_neighbors = 3)
 
-      features =  [[0], [1], [2], [3]]
+      features = [[0], [1], [2], [3]]
       labels = [0, 0, 1, 1]
 
       knn.fit(features, labels)
