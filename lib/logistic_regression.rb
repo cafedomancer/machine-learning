@@ -19,8 +19,8 @@ class LogisticRegression
   end
 
   def predict(features)
-    features.map { |f|
-      sigmoid(@coefficients.zip(f).map { |w, e| w * e }.reduce(&:+) + @intercept)
+    features.map { |feature|
+      sigmoid(@coefficients.zip(feature).map { |c, e| c * e }.reduce(&:+) + @intercept)
     }
   end
 
