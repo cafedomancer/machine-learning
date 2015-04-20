@@ -1,6 +1,5 @@
 require 'k_nearest_neighbors'
 
-
 RSpec.describe KNearestNeighbors do
   describe '#fit' do
     it 'keeps the input arguments to its instance variables' do
