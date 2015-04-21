@@ -23,7 +23,9 @@ class KMeans
 
       centroids = grouped.map { |label, features|
         features = features.map { |e| e.at(0) }
-        centroid = [features.map { |e| e.at(0) }.mean, features.map { |e| e.at(1) }.mean]
+        centroid = features.first.length.times.map { |i|
+          features.map { |e| e.at(i) }.mean
+        }
         [centroid, label]
       }
 
