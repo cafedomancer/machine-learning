@@ -26,6 +26,7 @@ class KMeans
       # the centroids are calculated by the mean of each group
       centroids_paired = grouped.map { |label, paired|
         features = paired.map { |e| e.at(0) }
+        # for 2 dimensional array
         centroid = [features.map { |e| e.at(0) }.mean, features.map { |e| e.at(1) }.mean]
         [centroid, label]
       }
