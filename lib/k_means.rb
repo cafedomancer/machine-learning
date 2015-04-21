@@ -11,37 +11,34 @@ class KMeans
     @n_clusters = n_clusters
   end
 
-  # refer to http://ja.wikipedia.org/wiki/K%E5%B9%B3%E5%9D%87%E6%B3%95
   def fit(features)
-    # the features vectors are labeled randomly
-    paired = features.map { |feature|
+    features = features.map { |feature|
       [feature, rand(0...@n_clusters)]
     }
 
-    # assignment step is repeated 5 times (hard-coded)
-    # but the interruption of assignment loop should be based on centroids' convergence
-    5.times do
-      grouped = paired.group_by { |e| e.at(1) }
+    previous_features = nil
 
-      # the centroids are calculated by the mean of each group
-      centroids_paired = grouped.map { |label, paired|
-        features = paired.map { |e| e.at(0) }
-        # for 2 dimensional array
+    until previous_features == features
+      grouped = features.group_by { |e| e.at(1) }
+
+      centroids = grouped.map { |label, features|
+        features = features.map { |e| e.at(0) }
         centroid = [features.map { |e| e.at(0) }.mean, features.map { |e| e.at(1) }.mean]
         [centroid, label]
       }
 
-      # the features vectors are relabeld by the nearest centroid label
-      paired = paired.map { |feature, _|
-        distances_paired = centroids_paired.map { |centroid, label|
+      features = features.map { |feature, _|
+        distances = centroids.map { |centroid, label|
           [feature.distance(centroid), label]
         }
-        distances_paired = distances_paired.sort_by { |e| e.at(0) }
-        label = distances_paired.at(0).at(1)
+        distances = distances.sort_by { |e| e.at(0) }
+        label = distances.at(0).at(1)
         [feature, label]
       }
+
+      previous_features = features
     end
 
-    paired
+    features
   end
 end
