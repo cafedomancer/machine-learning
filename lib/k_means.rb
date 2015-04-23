@@ -19,6 +19,8 @@ class KMeans
     previous_features = nil
 
     until previous_features == features
+      previous_features = features
+
       grouped = features.group_by { |e| e.at(1) }
 
       centroids = grouped.map { |label, features|
@@ -37,8 +39,6 @@ class KMeans
         label = distances.at(0).at(1)
         [feature, label]
       }
-
-      previous_features = features
     end
 
     features
