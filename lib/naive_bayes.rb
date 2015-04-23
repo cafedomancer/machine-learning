@@ -15,7 +15,7 @@ class NaiveBayes
       intersection = @terms & terms
 
       probablities = @term_document_matrix.map { |row|
-        row.count { |frequency| frequency != 0}.fdiv(@documents.length)
+        row.count { |frequency| frequency != 0 }.fdiv(@documents.length)
       }
 
       likelihood = intersection.map { |term|
