@@ -1,30 +1,35 @@
 class NaiveBayes
   def fit(features, labels)
-    @documents = features
-    @terms = @documents.flatten.uniq.sort
-    @term_document_matrix = @terms.map { |term|
-      @documents.map { |document| document.count(term) }
+    @variables = features.flatten.uniq.sort
+
+    matrix = @variables.map { |variable|
+      features.map { |feature| feature.count(variable) }
+    }
+
+    @probabilities = matrix.map { |row|
+      Math.log(row.count { |e| e != 0 }.fdiv(features.length))
     }
   end
 
   def predict(features)
-    documents = features
+    features.map { |feature|
+      variables = feature.uniq.sort
+      intersection = @variables & variables
 
-    documents.map { |document|
-      terms = document.uniq.sort
-      intersection = @terms & terms
+      epsilon = Math.log(1e-6)
 
-      probablities = @term_document_matrix.map { |row|
-        row.count { |frequency| frequency != 0 }.fdiv(@documents.length)
+      probabilities = @probabilities.zip(@variables).map { |probability, variable|
+        if intersection.include?(variable)
+          probability
+        else
+          epsilon
+        end
       }
 
-      likelihood = intersection.map { |term|
-        probablities.at(@terms.find_index(term))
-      }.reduce(&:*) * 1e-6 ** (@terms.length - intersection.length)
+      prior = Math.log(0.5)
+      likelihood = probabilities.reduce(&:+)
 
-      prior = 0.5
-
-      likelihood * prior
+      prior + likelihood
     }
   end
 end

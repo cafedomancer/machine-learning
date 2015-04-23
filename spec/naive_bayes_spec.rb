@@ -2,7 +2,7 @@ require 'naive_bayes'
 
 RSpec.describe NaiveBayes do
   describe '#fit' do
-    it 'keeps documents, temrs and term-document matrix to instance variables' do
+    it 'keeps feature variables and probablities matrix to instance variables' do
       nb = NaiveBayes.new
 
       features = [['human', 'interface', 'computer'],
@@ -18,14 +18,13 @@ RSpec.describe NaiveBayes do
 
       nb.fit(features, labels)
 
-      expect(nb.instance_variable_defined?('@documents')).to be_truthy
-      expect(nb.instance_variable_defined?('@terms')).to be_truthy
-      expect(nb.instance_variable_defined?('@term_document_matrix')).to be_truthy
+      expect(nb.instance_variable_defined?('@variables')).to be_truthy
+      expect(nb.instance_variable_defined?('@probabilities')).to be_truthy
     end
   end
 
   describe '#predict' do
-    it 'return the probability that the passed features will be classified into the training dataset label (temporary impl)' do
+    it 'return the logarithmic probability that the passed features will be classified into the training dataset label (temporary impl)' do
       nb = NaiveBayes.new
 
       features = [['human', 'interface', 'computer'],
