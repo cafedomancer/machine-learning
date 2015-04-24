@@ -3,11 +3,11 @@ class NaiveBayes
     @variables = features.flatten.uniq.sort
 
     matrix = @variables.map { |variable|
-      features.map { |feature| feature.count(variable) }
+      features.map { |feature| feature.include?(variable) }
     }
 
     @probabilities = matrix.map { |row|
-      Math.log(row.count { |e| e != 0 }.fdiv(features.length))
+      Math.log(row.count(true).fdiv(features.length))
     }
   end
 
