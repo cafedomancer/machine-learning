@@ -5,41 +5,57 @@ RSpec.describe NaiveBayes do
     it 'keeps feature variables and probablities matrix to instance variables' do
       nb = NaiveBayes.new
 
-      features = [['human', 'interface', 'computer'],
-                  ['survey', 'user', 'computer', 'system', 'response', 'time'],
-                  ['eps', 'user', 'interface', 'system'],
-                  ['system', 'human', 'system', 'eps'],
-                  ['user', 'response', 'time'],
-                  ['trees'],
-                  ['graph', 'trees'],
-                  ['graph', 'minors', 'trees'],
-                  ['graph', 'minors', 'survey']]
-      labels = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+      features = [%w(dogs are awesome cats too i love my dog),
+                  %w(cats are more preferred by software developers i never could stand cats i have a dog),
+                  %w(my dog's name is willy he likes to play with my wife's cat all day long i love dogs),
+                  %w(cats are difficult animals unlike dogs really annoying i hate them all),
+                  %w(so which one should you choose a dog definitely),
+                  %w(the favorite food for cats is bird meat although mice are good but birds are a delicacy),
+                  %w(a dog will eat anything including birds or whatever meat),
+                  %w(my cat's favorite place to purr is on my keyboard),
+                  %w(my dog's favorite place to take a leak is the tree in front of our house)]
+      labels = %w(dog cat dog cat dog cat dog cat dog)
 
       nb.fit(features, labels)
 
       expect(nb.instance_variable_defined?('@variables')).to be_truthy
-      expect(nb.instance_variable_defined?('@probabilities')).to be_truthy
+      expect(nb.instance_variable_defined?('@labels')).to be_truthy
+      expect(nb.instance_variable_defined?('@priors')).to be_truthy
+      expect(nb.instance_variable_defined?('@likelihoods')).to be_truthy
     end
   end
 
   describe '#predict' do
-    it 'return the logarithmic probability that the passed features will be classified into the training dataset label (temporary impl)' do
+    it 'return the most probable label of the given features' do
       nb = NaiveBayes.new
 
-      features = [['human', 'interface', 'computer'],
-                  ['eps', 'user', 'interface', 'system'],
-                  ['system', 'human', 'system', 'eps'],
-                  ['user', 'response', 'time'],
-                  ['trees'],
-                  ['graph', 'trees'],
-                  ['graph', 'minors', 'trees'],
-                  ['graph', 'minors', 'survey']]
-      labels = [1, 1, 1, 1, 1, 1, 1, 1]
+      features = [%w(dogs are awesome cats too i love my dog),
+                  %w(cats are more preferred by software developers i never could stand cats i have a dog),
+                  %w(my dog's name is willy he likes to play with my wife's cat all day long i love dogs),
+                  %w(cats are difficult animals unlike dogs really annoying i hate them all),
+                  %w(so which one should you choose a dog definitely),
+                  %w(the favorite food for cats is bird meat although mice are good but birds are a delicacy),
+                  %w(a dog will eat anything including birds or whatever meat),
+                  %w(my cat's favorite place to purr is on my keyboard),
+                  %w(my dog's favorite place to take a leak is the tree in front of our house)]
+      labels = %w(dog cat dog cat dog cat dog cat dog)
 
       nb.fit(features, labels)
 
-      expect(nb.predict([['survey', 'user', 'computer', 'system', 'response', 'time']]).first).to be_instance_of(Float)
+      expect(nb.predict([%w(this test is about cats)])).to eq(['cat'])
+      expect(nb.predict([%w(i hate)])).to eq(['cat'])
+      expect(nb.predict([%w(the most annoying animal on earth)])).to eq(['cat'])
+      expect(nb.predict([%w(the preferred company of software developers)])).to eq(['cat'])
+      expect(nb.predict([%w(my precious my favorite)])).to eq(['cat'])
+      expect(nb.predict([%w(get off my keyboard)])).to eq(['cat'])
+      expect(nb.predict([%w(kill that bird)])).to eq(['cat'])
+      expect(nb.predict([%w(this test is about dogs)])).to eq(['dog'])
+      expect(nb.predict([%w(cats or dogs)])).to eq(['dog'])
+      expect(nb.predict([%w(what pet will i love more)])).to eq(['dog'])
+      expect(nb.predict([%w(willy where the heck are you)])).to eq(['dog'])
+      expect(nb.predict([%w(i like big buts and i cannot lie)])).to eq(['dog'])
+      expect(nb.predict([%w(why is the front door of our house open)])).to eq(['dog'])
+      expect(nb.predict([%w(who is eating my meat)])).to eq(['dog'])
     end
   end
 end
