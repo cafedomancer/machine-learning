@@ -38,9 +38,7 @@ class NaiveBayes
   end
 
   def predict(features)
-    features.map { |feature|
-      provided_feature = feature.uniq.sort
-
+    features.map { |provided_feature|
       likelihoods = @labels.reduce({}) { |likelihoods, label|
         likelihood = @likelihoods.map { |feature, _|
           if provided_feature.include?(feature)
