@@ -7,10 +7,9 @@ class NaiveBayes
       occurrence = labels.count(label)
       total = labels.length
 
-      probability = occurrence.fdiv(total)
-      # log_probability = Math.log(occurrence.fdiv(total))
+      log_probability = Math.log(occurrence.fdiv(total))
 
-      priors.update(label => probability)
+      priors.update(label => log_probability)
     }
 
     @likelihoods = @features.reduce({}) { |likelihoods, feature|
@@ -26,14 +25,12 @@ class NaiveBayes
         total = selected.length
 
         unless occurrence.zero?
-          probability = occurrence.fdiv(total)
-          # log_probability = Math.log(occurrence.fdiv(total))
+          log_probability = Math.log(occurrence.fdiv(total))
         else
-          probability = 0.0
-          # log_probability = Math.log(0)
+          log_probability = Math.log(1e-6)
         end
 
-        likelihood.update(label => probability)
+        likelihood.update(label => log_probability)
       }
 
       likelihoods.update(feature => likelihood)
@@ -42,19 +39,22 @@ class NaiveBayes
 
   def predict(features)
     features.map { |feature|
-      feature = feature.uniq.sort
-      feature = feature & @likelihoods.keys
+      provided_feature = feature.uniq.sort
 
-      pp likelihoods = @labels.reduce({}) { |likelihoods, label|
-        likelihood = feature.map { |feature|
-          @likelihoods[feature][label]
-        }
+      likelihoods = @labels.reduce({}) { |likelihoods, label|
+        likelihood = @likelihoods.map { |feature, _|
+          if provided_feature.include?(feature)
+            @likelihoods[feature][label]
+          else
+            Math.log(1e-6)
+          end
+        }.reduce(&:+)
 
-        likelihoods.update(label => likelihood.reduce(&:*))
+        likelihoods.update(label => likelihood)
       }
 
-      pp posteriors = @labels.reduce({}) { |posteriors, label|
-        posterior = @priors[label] * likelihoods[label]
+      posteriors = @labels.reduce({}) { |posteriors, label|
+        posterior = @priors[label] + likelihoods[label]
 
         posteriors.update(label => posterior)
       }
