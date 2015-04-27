@@ -1,63 +1,13 @@
 class NaiveBayes
   def fit(features, labels)
-    @features = features.flatten.uniq.sort
-    @labels = labels.uniq.sort
-
-    @priors = @labels.reduce({}) { |priors, label|
-      occurrence = labels.count(label)
-      total = labels.length
-
-      log_probability = Math.log(occurrence.fdiv(total))
-
-      priors.update(label => log_probability)
-    }
-
-    @likelihoods = @features.reduce({}) { |likelihoods, feature|
-      likelihood = @labels.reduce({}) { |likelihood, label|
-        paired = features.zip(labels)
-        selected = paired.select { |_, original_label|
-          original_label == label
-        }
-
-        occurrence = selected.map { |original_feature, _|
-          original_feature.include?(feature)
-        }.count(true)
-        total = selected.length
-
-        unless occurrence.zero?
-          log_probability = Math.log(occurrence.fdiv(total))
-        else
-          log_probability = Math.log(1e-6)
-        end
-
-        likelihood.update(label => log_probability)
-      }
-
-      likelihoods.update(feature => likelihood)
-    }
+    @features = features
+    @labels = labels
   end
 
   def predict(features)
-    features.map { |provided_feature|
-      likelihoods = @labels.reduce({}) { |likelihoods, label|
-        likelihood = @likelihoods.map { |feature, _|
-          if provided_feature.include?(feature)
-            @likelihoods[feature][label]
-          else
-            Math.log(1e-6)
-          end
-        }.reduce(&:+)
-
-        likelihoods.update(label => likelihood)
-      }
-
-      posteriors = @labels.reduce({}) { |posteriors, label|
-        posterior = @priors[label] + likelihoods[label]
-
-        posteriors.update(label => posterior)
-      }
-
-      posteriors.max_by { |label, posterior| posterior }.first
+    features.map { |feature|
+      posteriors = @labels.uniq.sort.map { |label| posterior(feature, label) }
+      @labels.uniq.sort.zip(posteriors).max_by { |label, posterior| posterior }.first
     }
   end
 
@@ -67,5 +17,53 @@ class NaiveBayes
     compared = paired.map { |e1, e2| e1 == e2 }
     corrects = compared.count(true)
     corrects.fdiv(labels.length)
+  end
+
+  private
+
+  def conditional_probability(feature_variable, label, logarithm = false)
+    feature_variables = @features.zip(@labels).select { |_feature, _label| _label == label }.map { |feature, label| feature }.flatten
+
+    occurrence = feature_variables.count(feature_variable) + 1
+    total = feature_variables.length + @features.flatten.uniq.length
+    probability = occurrence.fdiv(total)
+
+    if logarithm
+      Math.log(probability)
+    else
+      probability
+    end
+  end
+
+  def likelihood(feature, label, logarithm = false)
+    probabilities = feature.map { |feature_variable|
+      conditional_probability(feature_variable, label, logarithm)
+    }
+
+    if logarithm
+      probabilities.reduce(&:+)
+    else
+      probabilities.reduce(&:*)
+    end
+  end
+
+  def prior(label, logarithm = false)
+    occurrence = @labels.count(label)
+    total = @labels.length
+    probability = occurrence.fdiv(total)
+
+    if logarithm
+      Math.log(probability)
+    else
+      probability
+    end
+  end
+
+  def posterior(feature, label, logarithm = false)
+    if logarithm
+      likelihood(feature, label, logarithm) + prior(label, logarithm)
+    else
+      likelihood(feature, label, logarithm) * prior(label, logarithm)
+    end
   end
 end
