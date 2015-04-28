@@ -1,4 +1,8 @@
+require 'memoist'
+
 class NaiveBayes
+  extend Memoist
+
   def fit(features, labels)
     @features = features
     @labels = labels
@@ -21,49 +25,42 @@ class NaiveBayes
 
   private
 
-  def conditional_probability(feature_variable, label, logarithm = false)
-    feature_variables = @features.zip(@labels).select { |_feature, _label| _label == label }.map { |feature, label| feature }.flatten
+  def conditional_probability(feature_variable, label)
+    feature_variables =
+      @features.zip(@labels).select { |_feature, _label| _label == label }.map { |feature, label| feature }.flatten
 
     occurrence = feature_variables.count(feature_variable) + 1
     total = feature_variables.length + @features.flatten.uniq.length
     probability = occurrence.fdiv(total)
 
-    if logarithm
-      Math.log(probability)
-    else
-      probability
-    end
+    Math.log(probability)
   end
 
-  def likelihood(feature, label, logarithm = false)
+  memoize :conditional_probability
+
+  def likelihood(feature, label)
     probabilities = feature.map { |feature_variable|
-      conditional_probability(feature_variable, label, logarithm)
+      conditional_probability(feature_variable, label)
     }
 
-    if logarithm
-      probabilities.reduce(&:+)
-    else
-      probabilities.reduce(&:*)
-    end
+    probabilities.reduce(&:+)
   end
 
-  def prior(label, logarithm = false)
+  memoize :likelihood
+
+  def prior(label)
     occurrence = @labels.count(label)
     total = @labels.length
     probability = occurrence.fdiv(total)
 
-    if logarithm
-      Math.log(probability)
-    else
-      probability
-    end
+    Math.log(probability)
   end
 
-  def posterior(feature, label, logarithm = false)
-    if logarithm
-      likelihood(feature, label, logarithm) + prior(label, logarithm)
-    else
-      likelihood(feature, label, logarithm) * prior(label, logarithm)
-    end
+  memoize :prior
+
+  def posterior(feature, label)
+    likelihood(feature, label) + prior(label)
   end
+
+  memoize :posterior
 end
