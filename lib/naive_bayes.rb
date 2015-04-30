@@ -39,11 +39,11 @@ class NaiveBayes
   memoize :conditional_probability
 
   def likelihood(feature, label)
-    probabilities = feature.map { |feature_variable|
+    conditional_probabilities = feature.map { |feature_variable|
       conditional_probability(feature_variable, label)
     }
 
-    probabilities.reduce(&:+)
+    conditional_probabilities.reduce(&:+)
   end
 
   memoize :likelihood
